@@ -1,33 +1,38 @@
-package com.example.consumeanyplaceapis.controller;
+package com.example.consumeanyplaceapis;
 
-import java.awt.PageAttributes.MediaType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.Data;
+
+@Data
+public class Body {
+	
+	private String pois_from;
+	private String pois_to;
+
+}
+
+
+
+
+
+package com.example.consumeanyplaceapis;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.example.consumeanyplaceapis.Body;
+@SpringBootApplication
+public class ConsumeanyplaceapisApplication {
 
-import reactor.core.publisher.Mono;
-
-@RestController
-public class AnyplaceController {
-	@Autowired
-	WebClient.Builder client;
+	public static void main(String[] args) {
+		SpringApplication.run(ConsumeanyplaceapisApplication.class, args);
+	}
 	
-	@PostMapping("/loginUser")
-	public String getPoisData(@RequestBody Body params) {
-		String baseurl = "https://ap.cs.ucy.ac.cy:44/api/navigation/route";
-		
-	String response = 	WebClient.create(baseurl).post()
-		.accept(org.springframework.http.MediaType.APPLICATION_JSON).contentType(org.springframework.http.MediaType.APPLICATION_JSON)
-		.body(Mono.just(params), Body.class)
-		.retrieve()
-		.bodyToMono(String.class).block();
-		return response;
+	@Bean
+	public WebClient.Builder getWebClient(){
+		return WebClient.builder();
 	}
 
 }
